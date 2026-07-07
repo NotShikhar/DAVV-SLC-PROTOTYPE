@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:en.wikipedia.org)",
+      "WebSearch",
+      "Bash(/opt/homebrew/bin/npm run *)"
+    ]
+  }
+}

@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * ============================================================================
+ * DAVV IET — Student Lifecycle · Design Tokens
+ * ----------------------------------------------------------------------------
+ * Brand identity grounded in DAVV's institutional look: deep navy + muted gold,
+ * on cream/white surfaces. Tailwind v4 reads this @theme block and generates
+ * utilities automatically (e.g. bg-navy, text-gold, border-line, font-heading).
+ * Keep ALL colour/spacing/typography decisions here so the whole app stays in
+ * sync from one place.
+ * ============================================================================
+ */
+@theme {
+  /* Brand — Deep Navy */
+  --color-navy: #1a3a5c;
+  --color-navy-700: #16324f;
+  --color-navy-800: #112741;
+  --color-navy-900: #0d1f34;
+
+  /* Brand — Muted Gold */
+  --color-gold: #d4a574;
+  --color-gold-600: #c4915d;
+  --color-gold-200: #ecd8be;
+  --color-gold-100: #f5ecdf;
+
+  /* Surfaces & text */
+  --color-cream: #f5f3f0;
+  --color-surface: #ffffff;
+  --color-ink: #1f2733; /* strong heading ink */
+  --color-slate: #4a5568; /* body text */
+  --color-muted: #7a8598; /* secondary/caption text */
+  --color-line: #e2e8f0; /* borders & dividers */
+
+  /* Status — chosen for >= 4.5:1 contrast on white */
+  --color-success: #2e7d32;
+  --color-success-bg: #e6f2e7;
+  --color-warning: #a35a00;
+  --color-warning-bg: #fbeed6;
+  --color-danger: #c62828;
+  --color-danger-bg: #fbe7e7;
+  --color-info: #1a3a5c;
+  --color-info-bg: #e8eef5;
+
+  /* Typography (font CSS vars are injected by next/font in layout.tsx) */
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-merriweather), ui-serif, Georgia, serif;
+
+  /* Radius */
+  --radius-card: 0.875rem;
+  --radius-btn: 0.625rem;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgba(16, 39, 65, 0.05), 0 6px 16px rgba(16, 39, 65, 0.06);
+  --shadow-pop: 0 12px 40px rgba(16, 39, 65, 0.16);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* --------------------------------------------------------------------------
+ * Base element styles — kept in @layer base so Tailwind utilities (e.g.
+ * text-white on a heading over a photo) always win over these defaults.
+ * ------------------------------------------------------------------------ */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-slate);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    color: var(--color-navy);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Accessible, consistent keyboard focus ring (WCAG 2.4.7) */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-navy);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-200);
+    color: var(--color-navy-900);
+  }
+
+  /* Slim, on-brand scrollbars (progressive enhancement) */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* --------------------------------------------------------------------------
+ * Small reusable helpers
+ * ------------------------------------------------------------------------ */
+@layer utilities {
+  /* Sanskrit motto / formal serif accent */
+  .font-serif-accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  /* Sun-ray hero accent used on marketing/hero surfaces */
+  .bg-navy-rays {
+    background-image: radial-gradient(
+        120% 120% at 100% 0%,
+        rgba(212, 165, 116, 0.18) 0%,
+        rgba(212, 165, 116, 0) 45%
+      ),
+      linear-gradient(160deg, var(--color-navy) 0%, var(--color-navy-900) 100%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Motion (respect user preference)
+ * ------------------------------------------------------------------------ */
+@keyframes davv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes davv-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: davv-fade-up 0.35s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
