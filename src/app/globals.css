@@ -2,58 +2,73 @@
 
 /*
  * ============================================================================
- * DAVV IET — Student Lifecycle · Design Tokens
+ * DAVV IET — Student Lifecycle · "Heritage Regal" Design Tokens
  * ----------------------------------------------------------------------------
- * Brand identity grounded in DAVV's institutional look: deep navy + muted gold,
- * on cream/white surfaces. Tailwind v4 reads this @theme block and generates
- * utilities automatically (e.g. bg-navy, text-gold, border-line, font-heading).
- * Keep ALL colour/spacing/typography decisions here so the whole app stays in
- * sync from one place.
+ * Premium university identity: deep navy + antique gold on warm cream paper,
+ * serif display type (Playfair), campus imagery, crest watermarks.
+ * Tailwind v4 reads this @theme block and generates utilities automatically
+ * (bg-navy, text-gold, border-line, font-heading, ...). Change colour/type
+ * decisions ONLY here so the whole app stays in sync.
  * ============================================================================
  */
 @theme {
   /* Brand — Deep Navy */
-  --color-navy: #1a3a5c;
-  --color-navy-700: #16324f;
-  --color-navy-800: #112741;
-  --color-navy-900: #0d1f34;
+  --color-navy: #10233c; /* sidebar, footer, dark cards */
+  --color-navy-700: #16283f;
+  --color-navy-800: #0d1d32;
+  --color-navy-900: #0a1728;
+  --color-navy-deep: #0a1728; /* gradient end */
+  --color-ink: #22303f; /* headings on light bg */
 
-  /* Brand — Muted Gold */
-  --color-gold: #d4a574;
-  --color-gold-600: #c4915d;
-  --color-gold-200: #ecd8be;
-  --color-gold-100: #f5ecdf;
+  /* Brand — Antique Gold */
+  --color-gold: #c9974b; /* CTAs, active borders */
+  --color-gold-600: #a97f3f; /* gold text on cream */
+  --color-gold-bright: #e2b877; /* gold on navy / hover */
+  --color-gold-200: #e8d7b8;
+  --color-gold-100: #f5ecdc;
 
-  /* Surfaces & text */
-  --color-cream: #f5f3f0;
-  --color-surface: #ffffff;
-  --color-ink: #1f2733; /* strong heading ink */
-  --color-slate: #4a5568; /* body text */
-  --color-muted: #7a8598; /* secondary/caption text */
-  --color-line: #e2e8f0; /* borders & dividers */
+  /* Cream paper surfaces */
+  --color-cream: #f7f1e6; /* page background */
+  --color-surface: #fffdf8; /* card surface */
+  --color-card: #fffdf8;
+  --color-cream-dark: #faf5ea; /* table footers / muted zones */
+  --color-cream-deep: #f2ead9; /* segmented tracks, icon chips */
 
-  /* Status — chosen for >= 4.5:1 contrast on white */
-  --color-success: #2e7d32;
-  --color-success-bg: #e6f2e7;
-  --color-warning: #a35a00;
-  --color-warning-bg: #fbeed6;
-  --color-danger: #c62828;
-  --color-danger-bg: #fbe7e7;
-  --color-info: #1a3a5c;
-  --color-info-bg: #e8eef5;
+  /* Text */
+  --color-slate: #4b4335; /* body */
+  --color-muted: #93856d; /* secondary */
+  --color-soft: #6d6353; /* tertiary */
+  --color-faint: #b3a488; /* course codes, timestamps */
 
-  /* Typography (font CSS vars are injected by next/font in layout.tsx) */
-  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Lines & borders */
+  --color-line: #eadfc9; /* card borders */
+  --color-hairline: #f2e9d8; /* card-header dividers */
+  --color-rowline: #f5efe1; /* table row dividers */
+  --color-field: #ddcfae; /* input borders */
+
+  /* Status (fg tones; *-bg for tinted fills) */
+  --color-success: #3d6b4f;
+  --color-success-bg: #eef4ee;
+  --color-warning: #9a6b1f;
+  --color-warning-bg: #f9efdc;
+  --color-danger: #a63d2f;
+  --color-danger-bg: #f9e7e3;
+  --color-info: #10233c;
+  --color-info-bg: #eef1f6;
+
+  /* Typography (font vars injected by next/font in layout.tsx) */
+  --font-heading: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-merriweather), ui-serif, Georgia, serif;
+  --font-mono: var(--font-sora), ui-monospace, "SFMono-Regular", monospace;
 
   /* Radius */
-  --radius-card: 0.875rem;
-  --radius-btn: 0.625rem;
+  --radius-card: 0.75rem; /* 12px */
+  --radius-btn: 0.625rem; /* 10px */
 
   /* Elevation */
-  --shadow-card: 0 1px 2px rgba(16, 39, 65, 0.05), 0 6px 16px rgba(16, 39, 65, 0.06);
-  --shadow-pop: 0 12px 40px rgba(16, 39, 65, 0.16);
+  --shadow-card: 0 2px 6px rgba(60, 48, 28, 0.05);
+  --shadow-pop: 0 10px 28px rgba(60, 48, 28, 0.12);
 }
 
 /* --------------------------------------------------------------------------
@@ -80,21 +95,21 @@
   h5,
   h6 {
     font-family: var(--font-heading);
-    color: var(--color-navy);
+    color: var(--color-ink);
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 
   /* Accessible, consistent keyboard focus ring (WCAG 2.4.7) */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--color-navy);
+    outline: 2px solid var(--color-gold-600);
     outline-offset: 2px;
     border-radius: 6px;
   }
 
   ::selection {
-    background-color: var(--color-gold-200);
-    color: var(--color-navy-900);
+    background-color: #ecd8be;
+    color: #0a1728;
   }
 
   /* Slim, on-brand scrollbars (progressive enhancement) */
@@ -105,24 +120,29 @@
 }
 
 /* --------------------------------------------------------------------------
- * Small reusable helpers
+ * Reusable helpers
  * ------------------------------------------------------------------------ */
 @layer utilities {
-  /* Sanskrit motto / formal serif accent */
+  /* Merriweather italic — eyebrow lines, motto, date lines */
   .font-serif-accent {
     font-family: var(--font-serif);
     font-style: italic;
   }
 
-  /* Sun-ray hero accent used on marketing/hero surfaces */
-  .bg-navy-rays {
-    background-image: radial-gradient(
-        120% 120% at 100% 0%,
-        rgba(212, 165, 116, 0.18) 0%,
-        rgba(212, 165, 116, 0) 45%
-      ),
-      linear-gradient(160deg, var(--color-navy) 0%, var(--color-navy-900) 100%);
+  /* Uppercase micro-label / eyebrow */
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.6875rem;
+    font-weight: 600;
   }
+}
+
+/* Navy gradient for sidebar / footer — a Tailwind v4 custom utility.
+   Always pair with a solid `bg-navy` so the surface is dark even if the
+   background-image is unsupported. */
+@utility bg-navy-gradient {
+  background-image: linear-gradient(180deg, var(--color-navy) 0%, var(--color-navy-deep) 100%);
 }
 
 /* --------------------------------------------------------------------------
@@ -136,7 +156,7 @@
 @keyframes davv-fade-up {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(9px);
   }
   to {
     opacity: 1;

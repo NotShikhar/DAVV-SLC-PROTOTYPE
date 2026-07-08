@@ -58,7 +58,7 @@ export function RoleShell({ role, children }: { role: Role; children: ReactNode 
   return (
     <div className="min-h-full">
       <Sidebar role={role} />
-      <div className="flex min-h-full flex-col lg:pl-64">
+      <div className="flex min-h-full flex-col lg:pl-[264px]">
         <Topbar role={role} name={user.name} meta={user.meta} color={user.color} />
         <main
           key={pathname}

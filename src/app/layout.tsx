@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
-import { Poppins, Open_Sans, Merriweather } from "next/font/google";
+import { Playfair_Display, Public_Sans, Merriweather, Sora } from "next/font/google";
 import { AccentStyle } from "@/components/layout/AccentStyle";
 import "./globals.css";
 
 /*
- * Institutional type system:
- *  - Poppins      → headings & UI labels
- *  - Open Sans    → body copy (16px / 1.6)
- *  - Merriweather → serif accent for the Sanskrit motto & formal documents
+ * "Heritage Regal" type system:
+ *  - Playfair Display → display serif for h1–h3, stat numbers, card titles
+ *  - Public Sans      → body, buttons, labels, tables
+ *  - Merriweather     → italic serif accent (eyebrows, motto, date lines)
+ *  - Sora             → enrollment numbers, course codes, avatar initials, numerals
  * Each exposes a CSS variable consumed by the @theme tokens in globals.css.
  */
-const poppins = Poppins({
-  variable: "--font-poppins",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const openSans = Open_Sans({
-  variable: "--font-open-sans",
+const publicSans = Public_Sans({
+  variable: "--font-public-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
@@ -27,7 +29,15 @@ const openSans = Open_Sans({
 const merriweather = Merriweather({
   variable: "--font-merriweather",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -46,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${openSans.variable} ${merriweather.variable} h-full antialiased`}
+      className={`${playfair.variable} ${publicSans.variable} ${merriweather.variable} ${sora.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <AccentStyle />

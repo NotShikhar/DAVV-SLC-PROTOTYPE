@@ -13,10 +13,10 @@ const ICON: Record<ToastTone, LucideIcon> = {
 };
 
 const ACCENT: Record<ToastTone, string> = {
-  success: "text-success",
-  warning: "text-warning",
-  danger: "text-danger",
-  info: "text-navy",
+  success: "text-gold-bright",
+  warning: "text-gold-bright",
+  danger: "text-[#e79b8f]",
+  info: "text-gold-bright",
 };
 
 function ToastItem({ toast }: { toast: Toast }) {
@@ -31,18 +31,20 @@ function ToastItem({ toast }: { toast: Toast }) {
   return (
     <div
       role="status"
-      className="animate-fade-up flex w-80 items-start gap-3 rounded-card border border-line bg-surface p-3 shadow-pop"
+      className="bg-navy animate-fade-up flex w-80 items-start gap-3 rounded-card border border-[rgba(226,184,119,0.5)] p-3.5 text-[#f3e7d3] shadow-pop"
     >
       <Icon className={cn("mt-0.5 size-5 shrink-0", ACCENT[toast.tone])} />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-navy">{toast.title}</p>
-        {toast.description && <p className="mt-0.5 text-xs text-muted">{toast.description}</p>}
+        <p className="text-sm font-semibold text-[#f3e7d3]">{toast.title}</p>
+        {toast.description && (
+          <p className="mt-0.5 text-xs text-[rgba(243,231,211,0.7)]">{toast.description}</p>
+        )}
       </div>
       <button
         type="button"
         onClick={() => dismiss(toast.id)}
         aria-label="Dismiss"
-        className="rounded p-0.5 text-muted hover:text-navy"
+        className="rounded p-0.5 text-[rgba(243,231,211,0.6)] hover:text-gold-bright"
       >
         <X className="size-4" />
       </button>

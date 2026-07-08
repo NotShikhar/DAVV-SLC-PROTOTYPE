@@ -13,6 +13,8 @@ interface AvatarProps {
   name: string;
   color?: string;
   size?: "sm" | "md" | "lg";
+  /** Antique-gold ring (used on the top bar). */
+  ring?: boolean;
   className?: string;
 }
 
@@ -23,11 +25,12 @@ const SIZES = {
 };
 
 /** Initials avatar — no external images (keeps the build fully static). */
-export function Avatar({ name, color = "#1a3a5c", size = "md", className }: AvatarProps) {
+export function Avatar({ name, color = "#10233c", size = "md", ring, className }: AvatarProps) {
   return (
     <span
       className={cn(
-        "inline-grid shrink-0 place-items-center rounded-full font-heading font-semibold text-white",
+        "inline-grid shrink-0 place-items-center rounded-full font-mono font-semibold text-white",
+        ring && "ring-[1.5px] ring-gold ring-offset-1 ring-offset-transparent",
         SIZES[size],
         className,
       )}

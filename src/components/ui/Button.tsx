@@ -5,9 +5,9 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 export type ButtonSize = "sm" | "md";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-navy text-white hover:bg-navy-700 focus-visible:outline-navy",
+  primary: "bg-gold text-navy font-bold shadow-[0_3px_10px_rgba(201,151,75,0.30)] hover:bg-gold-bright",
   secondary: "border border-gold text-navy bg-transparent hover:bg-gold-100",
-  ghost: "text-navy hover:bg-cream",
+  ghost: "text-navy hover:bg-cream-deep",
   danger: "bg-danger text-white hover:opacity-90",
 };
 
@@ -23,7 +23,7 @@ export function buttonClasses(
   className?: string,
 ): string {
   return cn(
-    "inline-flex items-center justify-center rounded-btn font-medium font-heading",
+    "inline-flex items-center justify-center rounded-btn font-semibold",
     "transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:size-4 [&_svg]:shrink-0",
     VARIANTS[variant],

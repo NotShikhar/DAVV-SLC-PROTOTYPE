@@ -1,5 +1,6 @@
 import type { LetterGrade } from "@/types";
-import { Badge, type Tone } from "@/components/ui/Badge";
+import type { Tone } from "@/components/ui/Badge";
+import { cn } from "@/lib/utils/cn";
 
 export function gradeTone(grade: LetterGrade): Tone {
   switch (grade) {
@@ -19,17 +20,26 @@ export function gradeTone(grade: LetterGrade): Tone {
   }
 }
 
+const CHIP: Record<Tone, string> = {
+  success: "bg-success-bg text-success border-[#cfe0d2]",
+  warning: "bg-warning-bg text-warning border-[#ead9b6]",
+  danger: "bg-danger-bg text-danger border-[#eccdc5]",
+  info: "bg-info-bg text-info border-[#d4dce8]",
+  neutral: "bg-[#f2ede1] text-soft border-[#e4dcc9]",
+  gold: "bg-gold-100 text-gold-600 border-gold-200",
+};
+
+/** Grade chip — 34×24 rounded rectangle, tone-mapped to the CBCS scale. */
 export function GradeBadge({ grade }: { grade: LetterGrade | null }) {
-  if (grade === null) {
-    return (
-      <Badge tone="neutral" className="w-9 justify-center">
-        —
-      </Badge>
-    );
-  }
+  const tone: Tone = grade === null ? "neutral" : gradeTone(grade);
   return (
-    <Badge tone={gradeTone(grade)} className="w-9 justify-center tabular-nums">
-      {grade}
-    </Badge>
+    <span
+      className={cn(
+        "inline-grid h-6 w-[34px] place-items-center rounded-md border font-mono text-[11.5px] font-bold tabular-nums",
+        CHIP[tone],
+      )}
+    >
+      {grade ?? "—"}
+    </span>
   );
 }

@@ -28,15 +28,15 @@ export function Section({
   return (
     <Card accent={accent} className={className}>
       {(title || action) && (
-        <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4">
+        <div className="flex items-start justify-between gap-4 border-b border-hairline px-5 py-4">
           <div className="flex items-start gap-3">
             {Icon && (
-              <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-navy/5 text-navy">
+              <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-cream-deep text-gold-600">
                 <Icon className="size-4" />
               </span>
             )}
             <div>
-              {title && <h2 className="text-base font-semibold text-navy">{title}</h2>}
+              {title && <h2 className="text-[19px] font-semibold text-navy">{title}</h2>}
               {description && <p className="mt-0.5 text-sm text-muted">{description}</p>}
             </div>
           </div>

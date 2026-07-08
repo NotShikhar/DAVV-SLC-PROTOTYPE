@@ -9,10 +9,10 @@ import { ATTENDANCE_THRESHOLD, FEE_STRUCTURE, INSTITUTE } from "@/lib/domain/con
 export type AccentKey = "gold" | "teal" | "maroon" | "azure";
 
 export const ACCENTS: Record<AccentKey, { label: string; hex: string; hex600: string }> = {
-  gold: { label: "Heritage Gold", hex: "#d4a574", hex600: "#c4915d" },
-  teal: { label: "Teal", hex: "#159c8e", hex600: "#0f766e" },
-  maroon: { label: "Maroon", hex: "#c2557a", hex600: "#9d174d" },
-  azure: { label: "Azure", hex: "#4b8ef7", hex600: "#2563eb" },
+  gold: { label: "Heritage Gold", hex: "#c9974b", hex600: "#a97f3f" },
+  teal: { label: "Teal", hex: "#2f7d6e", hex600: "#276657" },
+  maroon: { label: "Maroon", hex: "#9c4a52", hex600: "#823a42" },
+  azure: { label: "Azure", hex: "#3f6ea8", hex600: "#345a8c" },
 };
 
 export type StudentFeature = "fees" | "services" | "notifications";
