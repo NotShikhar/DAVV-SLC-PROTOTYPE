@@ -4,3 +4,4 @@ export * from "./grades";
 export * from "./credits";
 export * from "./eligibility";
 export * from "./permissions";
+export * from "./admission";

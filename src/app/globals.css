@@ -5,7 +5,7 @@
  * DAVV IET — Student Lifecycle · "Heritage Regal" Design Tokens
  * ----------------------------------------------------------------------------
  * Premium university identity: deep navy + antique gold on warm cream paper,
- * serif display type (Playfair), campus imagery, crest watermarks.
+ * serif display type (Fraunces), campus imagery, crest watermarks.
  * Tailwind v4 reads this @theme block and generates utilities automatically
  * (bg-navy, text-gold, border-line, font-heading, ...). Change colour/type
  * decisions ONLY here so the whole app stays in sync.
@@ -57,9 +57,9 @@
   --color-info-bg: #eef1f6;
 
   /* Typography (font vars injected by next/font in layout.tsx) */
-  --font-heading: var(--font-playfair), ui-serif, Georgia, serif;
-  --font-body: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-merriweather), ui-serif, Georgia, serif;
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-body: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-mono: var(--font-sora), ui-monospace, "SFMono-Regular", monospace;
 
   /* Radius */
@@ -166,6 +166,24 @@
 
 .animate-fade-up {
   animation: davv-fade-up 0.35s ease both;
+}
+
+/* Soft status halo (StatusIndicator) — expands three times, then rests,
+   so it draws the eye without nagging like an infinite ping. */
+@keyframes davv-ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+.animate-ping-soft {
+  animation: davv-ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) 0.4s 3 both;
 }
 
 @media (prefers-reduced-motion: reduce) {

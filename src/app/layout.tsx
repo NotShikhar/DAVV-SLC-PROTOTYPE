@@ -1,36 +1,27 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Public_Sans, Merriweather, Sora } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans, Sora } from "next/font/google";
 import { AccentStyle } from "@/components/layout/AccentStyle";
 import "./globals.css";
 
 /*
- * "Heritage Regal" type system:
- *  - Playfair Display → display serif for h1–h3, stat numbers, card titles
- *  - Public Sans      → body, buttons, labels, tables
- *  - Merriweather     → italic serif accent (eyebrows, motto, date lines)
- *  - Sora             → enrollment numbers, course codes, avatar initials, numerals
+ * "Heritage Modern" type system:
+ *  - Fraunces          → soft display serif for h1–h3, stat numbers, card
+ *                        titles; its italic also serves the serif accents
+ *                        (eyebrows, motto, date lines)
+ *  - Plus Jakarta Sans → body, buttons, labels, tables
+ *  - Sora              → enrollment numbers, course codes, avatar initials
  * Each exposes a CSS variable consumed by the @theme tokens in globals.css.
  */
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const publicSans = Public_Sans({
-  variable: "--font-public-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const merriweather = Merriweather({
-  variable: "--font-merriweather",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -50,13 +41,11 @@ export const metadata: Metadata = {
     "Student Lifecycle portal for the Institute of Engineering & Technology, Devi Ahilya Vishwavidyalaya (DAVV), Indore.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${publicSans.variable} ${merriweather.variable} ${sora.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${jakarta.variable} ${sora.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <AccentStyle />

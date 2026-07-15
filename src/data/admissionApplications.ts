@@ -1,0 +1,122 @@
+import type { AdmissionApplication } from "@/types";
+import { PRIMARY_INCHARGE_ID } from "./admissionIncharges";
+
+/**
+ * Pre-seeded admission applications so the Incharge console is populated on
+ * first load. These seed the (persisted) `useAdmissions` store the way
+ * SEED_CERTIFICATE_REQUESTS seeds `useDemo`. Roll numbers reference
+ * ELIGIBLE_CANDIDATES; each demonstrates a different workflow state.
+ */
+export const SEED_ADMISSION_APPLICATIONS: AdmissionApplication[] = [
+  // Under review — waiting for the incharge (rollno 260311030512, IT).
+  {
+    applicationNo: "26270001",
+    rollno: "260311030512",
+    aadharNo: "432156789987",
+    apaarId: "112233445566",
+    email: "harshita.aher@example.com",
+    bloodGroup: "B+",
+    photo: { name: "harshita-photo.jpg", sizeKB: 214, type: "image/jpeg" },
+    category: "OBC",
+    subCategory: "None",
+    religion: "Hindu",
+    minority: "No",
+    hscPercent: 90,
+    hscPassingYear: 2024,
+    hscUniversity: "CBSE",
+    lastExam: "HSSC (12th)",
+    passingYear: 2026,
+    university: "CBSE",
+    dob: "2008-02-28",
+    fatherOcc: "Business",
+    motherOcc: "Housewife",
+    parentMobile: "9990002002",
+    perm: { houseNo: "12-P", street: "Sudama Nagar", state: "Madhya Pradesh", district: "Indore", city: "Indore", pin: "452009" },
+    local: { houseNo: "12-P", street: "Sudama Nagar", state: "Madhya Pradesh", district: "Indore", city: "Indore", pin: "452009" },
+    guardianMobile: "9990002003",
+    guardianAddress: "12-P, Sudama Nagar, Indore",
+    payments: [
+      { id: "pay-seed-1", txnNo: "402615789034", amount: 49000, payDate: "2026-07-11", bankMode: "UPI · SBI", remarks: "Full fee", proof: { name: "utr-402615.jpg", sizeKB: 180, type: "image/jpeg" } },
+    ],
+    status: "pending",
+    submittedAt: "2026-07-11T10:15:00",
+    updatedAt: "2026-07-11T10:15:00",
+  },
+
+  // Rejected with a reason — the applicant must correct & resubmit (260311030634, ETC).
+  {
+    applicationNo: "26270002",
+    rollno: "260311030634",
+    aadharNo: "556677889900",
+    email: "madhur.gangwal@example.com",
+    bloodGroup: "O+",
+    photo: { name: "madhur-photo.png", sizeKB: 320, type: "image/png" },
+    category: "SC",
+    subCategory: "None",
+    religion: "Hindu",
+    minority: "No",
+    hscPercent: 78,
+    hscPassingYear: 2024,
+    hscUniversity: "MP Board",
+    lastExam: "HSSC (12th)",
+    passingYear: 2026,
+    university: "MP Board",
+    dob: "2007-11-05",
+    fatherOcc: "Farmer",
+    motherOcc: "Housewife",
+    parentMobile: "9990003003",
+    perm: { houseNo: "44", street: "Ward 6, Mhow", state: "Madhya Pradesh", district: "Indore", city: "Mhow", pin: "453441" },
+    local: { houseNo: "44", street: "Ward 6, Mhow", state: "Madhya Pradesh", district: "Indore", city: "Mhow", pin: "453441" },
+    guardianMobile: "9990003004",
+    guardianAddress: "44, Ward 6, Mhow, Indore",
+    payments: [
+      { id: "pay-seed-2", txnNo: "77120033", amount: 49000, payDate: "2026-07-12", bankMode: "UPI · HDFC", proof: { name: "receipt-77120033.pdf", sizeKB: 240, type: "application/pdf" } },
+    ],
+    status: "rejected",
+    submittedAt: "2026-07-12T09:40:00",
+    updatedAt: "2026-07-12T14:05:00",
+    decidedAt: "2026-07-12T14:05:00",
+    decidedBy: PRIMARY_INCHARGE_ID,
+    rejectionReason:
+      "The payment proof is unclear and the UTR does not match our records. Please re-upload a legible receipt and correct the transaction/UTR number, then resubmit.",
+  },
+
+  // Approved & confirmed — seat allotted (260311030770, CSBS).
+  {
+    applicationNo: "26270003",
+    rollno: "260311030770",
+    aadharNo: "223344556677",
+    apaarId: "998877665544",
+    email: "priya.verma@example.com",
+    bloodGroup: "A+",
+    photo: { name: "priya-photo.jpg", sizeKB: 198, type: "image/jpeg" },
+    category: "EWS",
+    subCategory: "EWS",
+    religion: "Hindu",
+    minority: "No",
+    hscPercent: 94,
+    hscPassingYear: 2024,
+    hscUniversity: "CBSE",
+    lastExam: "HSSC (12th)",
+    passingYear: 2026,
+    university: "CBSE",
+    dob: "2008-06-14",
+    fatherOcc: "Government Service",
+    motherOcc: "Teacher",
+    parentMobile: "9990004004",
+    perm: { houseNo: "A-21", street: "Scheme No. 78", state: "Madhya Pradesh", district: "Indore", city: "Indore", pin: "452010" },
+    local: { houseNo: "A-21", street: "Scheme No. 78", state: "Madhya Pradesh", district: "Indore", city: "Indore", pin: "452010" },
+    guardianMobile: "9990004005",
+    guardianAddress: "A-21, Scheme No. 78, Indore",
+    payments: [
+      { id: "pay-seed-3a", txnNo: "900021145", amount: 9000, payDate: "2026-07-10", bankMode: "UPI · SBI", remarks: "Part 1", proof: { name: "utr-900021145.jpg", sizeKB: 160, type: "image/jpeg" } },
+      { id: "pay-seed-3b", txnNo: "900021146", amount: 40000, payDate: "2026-07-10", bankMode: "Net Banking · SBI", remarks: "Part 2", proof: { name: "utr-900021146.jpg", sizeKB: 172, type: "image/jpeg" } },
+    ],
+    status: "approved",
+    submittedAt: "2026-07-10T11:20:00",
+    updatedAt: "2026-07-10T16:30:00",
+    decidedAt: "2026-07-10T16:30:00",
+    decidedBy: PRIMARY_INCHARGE_ID,
+    seatNo: "IET-2026-CSBS-001",
+  },
+];

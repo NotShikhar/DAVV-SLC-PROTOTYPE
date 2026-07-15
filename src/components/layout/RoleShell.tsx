@@ -35,14 +35,14 @@ function resolveUser(role: Role, userId: string): UserChip {
 
 function FullScreenLoader() {
   return (
-    <div className="grid min-h-screen place-items-center bg-cream">
+    <div className="bg-cream grid min-h-screen place-items-center">
       <Crest className="size-12 animate-pulse" />
     </div>
   );
 }
 
 /**
- * Role-guarded application shell: fixed navy sidebar, sticky top bar, centred
+ * Role-guarded application shell: floating navy sidebar, sticky top bar, centred
  * content column and footer. Redirects to /login if the session role does not
  * match the route group.
  */
@@ -58,7 +58,7 @@ export function RoleShell({ role, children }: { role: Role; children: ReactNode 
   return (
     <div className="min-h-full">
       <Sidebar role={role} />
-      <div className="flex min-h-full flex-col lg:pl-[264px]">
+      <div className="flex min-h-full flex-col lg:pl-[108px]">
         <Topbar role={role} name={user.name} meta={user.meta} color={user.color} />
         <main
           key={pathname}

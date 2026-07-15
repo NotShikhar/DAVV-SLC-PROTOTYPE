@@ -35,6 +35,9 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Table, Td, Th } from "@/components/ui/Table";
 import { buttonClasses } from "@/components/ui/Button";
+import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
+import { StatusIndicator } from "@/components/ui/StatusIndicator";
+import { TextAnimate } from "@/components/ui/TextAnimate";
 import { cn } from "@/lib/utils/cn";
 
 export default function DashboardPage() {
@@ -63,11 +66,12 @@ export default function DashboardPage() {
       <HeroBanner scrim="left" className="mb-6">
         <div className="flex flex-col gap-4 px-6 py-7 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div>
-            <p className="font-serif-accent text-sm text-gold">
-              Semester {toRoman(student.currentSemester)} · {semesterParity(student.currentSemester)} Semester
+            <p className="font-serif-accent text-gold text-sm">
+              Semester {toRoman(student.currentSemester)} ·{" "}
+              {semesterParity(student.currentSemester)} Semester
             </p>
-            <h1 className="mt-1 font-heading text-2xl font-bold text-white sm:text-3xl">
-              Welcome back, {firstName}
+            <h1 className="font-heading mt-1 text-2xl font-bold text-white sm:text-3xl">
+              <TextAnimate text={`Welcome back, ${firstName}`} />
             </h1>
             <p className="mt-1 text-sm text-white/75">
               {student.branch} · Section {student.section} · Enroll. {student.enrollmentNo}
@@ -81,14 +85,15 @@ export default function DashboardPage() {
 
       {/* Eligibility banner when not clear */}
       {eligibility.status !== "Eligible" && (
-        <Card accent className="mb-6 border-l-warning bg-warning-bg/40 p-4">
+        <Card accent className="border-l-warning bg-warning-bg/40 mb-6 p-4">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="mt-0.5 size-5 shrink-0 text-warning" />
+            <AlertTriangle className="text-warning mt-0.5 size-5 shrink-0" />
             <div className="flex-1">
-              <p className="font-heading font-semibold text-navy">
-                Exam eligibility {eligibility.status === "Detained" ? "at serious risk" : "needs attention"}
+              <p className="font-heading text-navy font-semibold">
+                Exam eligibility{" "}
+                {eligibility.status === "Detained" ? "at serious risk" : "needs attention"}
               </p>
-              <p className="mt-0.5 text-sm text-slate">
+              <p className="text-slate mt-0.5 text-sm">
                 Aggregate attendance is {eligibility.aggregate}% (minimum 75% required). Review the
                 affected courses before the exam-form window.
               </p>
@@ -104,7 +109,7 @@ export default function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="CGPA"
-          value={cgpa?.toFixed(2) ?? "—"}
+          value={cgpa != null ? <AnimatedNumber value={cgpa} format={(n) => n.toFixed(2)} /> : "—"}
           icon={TrendingUp}
           tone="success"
           hint={`${completed.length} semesters completed`}
@@ -112,7 +117,7 @@ export default function DashboardPage() {
         />
         <StatCard
           label="Credits earned"
-          value={progress.earned}
+          value={<AnimatedNumber value={progress.earned} />}
           icon={GraduationCap}
           tone="info"
           hint={`of ${REQUIRED_CREDITS} required`}
@@ -120,7 +125,9 @@ export default function DashboardPage() {
         />
         <StatCard
           label="Attendance"
-          value={`${eligibility.aggregate}%`}
+          value={
+            <AnimatedNumber value={eligibility.aggregate} format={(n) => `${Math.round(n)}%`} />
+          }
           icon={CalendarClock}
           tone={eligibility.aggregate >= 75 ? "success" : "danger"}
           hint="current semester"
@@ -128,7 +135,13 @@ export default function DashboardPage() {
         />
         <StatCard
           label="Fee due"
-          value={feeDue ? formatINR(feeDue) : "Nil"}
+          value={
+            feeDue ? (
+              <AnimatedNumber value={feeDue} format={(n) => formatINR(Math.round(n))} />
+            ) : (
+              "Nil"
+            )
+          }
           icon={Wallet}
           tone={feeDue ? "warning" : "success"}
           hint={feeDue ? "examination fee pending" : "all cleared"}
@@ -142,14 +155,14 @@ export default function DashboardPage() {
           <Section title="Performance snapshot" icon={TrendingUp} bodyClassName="p-5">
             <div className="grid items-center gap-6 sm:grid-cols-3">
               <div>
-                <p className="text-xs tracking-wide text-muted uppercase">SGPA trend</p>
+                <p className="text-muted text-xs tracking-wide uppercase">SGPA trend</p>
                 <div className="mt-1 flex items-end gap-3">
-                  <span className="font-heading text-2xl font-bold text-navy">
+                  <span className="font-heading text-navy text-2xl font-bold">
                     {lastSgpa != null ? lastSgpa.toFixed(2) : "—"}
                   </span>
                   <Sparkline values={sgpaTrend} className="text-gold-600" />
                 </div>
-                <p className="mt-1 text-xs text-muted">across {sgpaTrend.length} semesters</p>
+                <p className="text-muted mt-1 text-xs">across {sgpaTrend.length} semesters</p>
               </div>
               <div className="flex justify-center">
                 <Gauge
@@ -160,7 +173,12 @@ export default function DashboardPage() {
                 />
               </div>
               <div className="flex justify-center">
-                <Gauge value={progress.percent} tone="info" label={`${progress.percent}%`} sublabel="Degree" />
+                <Gauge
+                  value={progress.percent}
+                  tone="info"
+                  label={`${progress.percent}%`}
+                  sublabel="Degree"
+                />
               </div>
             </div>
           </Section>
@@ -171,14 +189,18 @@ export default function DashboardPage() {
                 <Badge tone={standing.tone} dot>
                   {standing.label}
                 </Badge>
-                <p className="text-sm text-slate">{standing.reason}</p>
+                <p className="text-slate text-sm">{standing.reason}</p>
               </div>
-              <span className="font-heading text-sm text-muted">
-                CGPA <span className="font-semibold text-navy">{cgpa?.toFixed(2) ?? "—"}</span>
+              <span className="font-heading text-muted text-sm">
+                CGPA <span className="text-navy font-semibold">{cgpa?.toFixed(2) ?? "—"}</span>
               </span>
             </div>
             <div className="mt-5">
-              <CreditMeter earned={progress.earned} required={progress.required} label="Degree progress" />
+              <CreditMeter
+                earned={progress.earned}
+                required={progress.required}
+                label="Degree progress"
+              />
             </div>
           </Section>
 
@@ -187,7 +209,7 @@ export default function DashboardPage() {
             description={latest?.session}
             icon={GraduationCap}
             action={
-              <Link href="/results" className="text-sm font-medium text-navy hover:text-gold">
+              <Link href="/results" className="text-navy hover:text-gold text-sm font-medium">
                 View all
               </Link>
             }
@@ -206,8 +228,8 @@ export default function DashboardPage() {
                   {latest.courses.map((c) => (
                     <tr key={c.courseCode}>
                       <Td>
-                        <span className="font-medium text-navy">{c.title}</span>
-                        <span className="ml-2 text-xs text-muted">{c.courseCode}</span>
+                        <span className="text-navy font-medium">{c.title}</span>
+                        <span className="text-muted ml-2 text-xs">{c.courseCode}</span>
                       </Td>
                       <Td className="text-right tabular-nums">
                         {c.internal !== null && c.external !== null ? c.internal + c.external : "—"}
@@ -220,12 +242,14 @@ export default function DashboardPage() {
                 </tbody>
               </Table>
             ) : (
-              <p className="p-5 text-sm text-muted">No results declared yet.</p>
+              <p className="text-muted p-5 text-sm">No results declared yet.</p>
             )}
             {latest?.sgpa != null && (
-              <div className="flex items-center justify-end gap-2 border-t border-line px-5 py-3 text-sm">
+              <div className="border-line flex items-center justify-end gap-2 border-t px-5 py-3 text-sm">
                 <span className="text-muted">SGPA</span>
-                <span className="font-heading text-base font-semibold text-navy">{latest.sgpa.toFixed(2)}</span>
+                <span className="font-heading text-navy text-base font-semibold">
+                  {latest.sgpa.toFixed(2)}
+                </span>
               </div>
             )}
           </Section>
@@ -234,20 +258,20 @@ export default function DashboardPage() {
         {/* Right: deadlines, notifications, quick actions */}
         <div className="space-y-6">
           <Section title="Upcoming deadlines" icon={CalendarClock} bodyClassName="p-0">
-            <ul className="divide-y divide-line">
+            <ul className="divide-line divide-y">
               {upcoming.map((e) => (
                 <li key={e.id} className="flex items-center gap-3 px-5 py-3">
-                  <div className="grid size-10 shrink-0 place-items-center rounded-lg bg-cream text-center leading-none">
-                    <span className="font-heading text-sm font-bold text-navy">
+                  <div className="bg-cream grid size-10 shrink-0 place-items-center rounded-lg text-center leading-none">
+                    <span className="font-heading text-navy text-sm font-bold">
                       {new Date(e.date).getDate()}
                     </span>
-                    <span className="text-[10px] text-muted uppercase">
+                    <span className="text-muted text-[10px] uppercase">
                       {new Date(e.date).toLocaleDateString("en-IN", { month: "short" })}
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-navy">{e.title}</p>
-                    <p className="text-xs text-muted">{e.detail ?? formatDate(e.date)}</p>
+                    <p className="text-navy truncate text-sm font-medium">{e.title}</p>
+                    <p className="text-muted text-xs">{e.detail ?? formatDate(e.date)}</p>
                   </div>
                 </li>
               ))}
@@ -258,20 +282,22 @@ export default function DashboardPage() {
             title="Notifications"
             icon={Bell}
             action={
-              <Link href="/notifications" className="text-sm font-medium text-navy hover:text-gold">
+              <Link href="/notifications" className="text-navy hover:text-gold text-sm font-medium">
                 All
               </Link>
             }
             bodyClassName="p-0"
           >
-            <ul className="divide-y divide-line">
+            <ul className="divide-line divide-y">
               {recentNotifications.map((n) => (
                 <li key={n.id} className="px-5 py-3">
                   <div className="flex items-center gap-2">
-                    {!n.read && <span className="size-1.5 rounded-full bg-gold" aria-hidden />}
-                    <p className={cn("text-sm", n.read ? "text-slate" : "font-medium text-navy")}>{n.title}</p>
+                    {!n.read && <StatusIndicator tone="gold" size="sm" aria-hidden />}
+                    <p className={cn("text-sm", n.read ? "text-slate" : "text-navy font-medium")}>
+                      {n.title}
+                    </p>
                   </div>
-                  <p className="mt-0.5 line-clamp-1 text-xs text-muted">{n.message}</p>
+                  <p className="text-muted mt-0.5 line-clamp-1 text-xs">{n.message}</p>
                 </li>
               ))}
             </ul>
@@ -279,7 +305,8 @@ export default function DashboardPage() {
 
           <div className="grid grid-cols-1 gap-2">
             <Link href="/registration" className={buttonClasses("primary", "md")}>
-              <ClipboardList className="size-4" /> Register subjects <ArrowRight className="ml-auto size-4" />
+              <ClipboardList className="size-4" /> Register subjects{" "}
+              <ArrowRight className="ml-auto size-4" />
             </Link>
             <Link href="/examinations" className={buttonClasses("secondary", "md")}>
               <GraduationCap className="size-4" /> Exam form & hall ticket

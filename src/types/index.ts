@@ -335,3 +335,171 @@ export interface ImportedStudentRow {
   email: string;
   phone: string;
 }
+
+/* ============================================================================
+ * Admission Portal — a separate, applicant-facing sub-app that remakes the
+ * institute's post-counselling online-admission software. Two actors:
+ * the Applicant (verified against a mock DTE eligible-list) and the
+ * Verification Incharge. Field names mirror the real DB to stay faithful.
+ * ========================================================================== */
+
+export type AdmissionProgram = "BTech";
+
+/**
+ * A row from the DTE (MPDTE) eligible-allotment list. This is both the login
+ * source (matched on rollno + rank + contact) and the read-only "Section A"
+ * of the admission form. `eligCat`/`allotCat` are DTE seat-pool codes
+ * (e.g. URXOP, OBCXF, AIUR, EWS) kept as free text.
+ */
+export interface EligibleCandidate {
+  program: AdmissionProgram;
+  branch: BranchCode;
+  rank: number;
+  marks: number;
+  rollno: string;
+  name: string;
+  father: string;
+  mother: string;
+  eligCat: string;
+  allotCat: string;
+  domicile: "Y" | "N";
+  gender: "M" | "F";
+  ews: "Y" | "N";
+  contNo: string;
+  status: "Not Reported" | "Allotment Letter Printed" | "Upgrade";
+  allotDate: string;
+  allotRound: string;
+}
+
+/** A verification incharge (admin actor of the admission portal). */
+export interface AdmissionIncharge {
+  id: string;
+  name: string;
+  email: string;
+  photoColor: string;
+}
+
+export type BloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-" | "Not Known";
+export type AdmissionCategory = "General" | "OBC" | "SC" | "ST" | "EWS";
+export type AdmissionSubCategory =
+  | "Handicapped"
+  | "J K Resident"
+  | "J K Migrant"
+  | "PMSSS"
+  | "EWS"
+  | "TFW"
+  | "DAVV-EQ"
+  | "None";
+export type Religion = "Hindu" | "Muslim" | "Christian" | "Sikh" | "Jain" | "Buddhist" | "Other";
+export type LastExam = "HSSC (12th)" | "Diploma" | "Other";
+export type ExamBoard =
+  | "CBSE"
+  | "ICSE"
+  | "MP Board"
+  | "Any Other School Education Board"
+  | "DAVV"
+  | "RGPV"
+  | "Other";
+
+/** Mocked upload — we keep metadata (+ a transient in-memory preview), never files. */
+export interface UploadMeta {
+  name: string;
+  sizeKB: number;
+  type: string;
+  dataUrl?: string;
+}
+
+/** One offline fee transaction the applicant records (UTR + proof). */
+export interface PaymentRow {
+  id: string;
+  txnNo: string;
+  amount: number;
+  payDate: string;
+  bankMode: string;
+  remarks?: string;
+  proof?: UploadMeta;
+}
+
+export interface AdmissionAddress {
+  houseNo: string;
+  street: string;
+  state: string;
+  district: string;
+  city: string;
+  pin: string;
+}
+
+export type ApplicationStatus = "pending" | "approved" | "rejected" | "cancelled";
+
+/** A submitted admission form (Sections B–F + the pre-paid fee details). */
+export interface AdmissionApplication {
+  /** Generated on first submit: 2627XXXX. Stable across resubmissions. */
+  applicationNo: string;
+  /** FK → EligibleCandidate; Section A is derived from this, never edited. */
+  rollno: string;
+
+  // B — Identity & Contact
+  aadharNo: string;
+  apaarId?: string;
+  email: string;
+  bloodGroup: BloodGroup;
+  photo?: UploadMeta;
+
+  // C — Category & Religion
+  category: AdmissionCategory;
+  subCategory: AdmissionSubCategory;
+  religion: Religion;
+  minority: "Yes" | "No";
+
+  // D — Academic
+  hscPercent: number;
+  hscPassingYear: number;
+  hscUniversity: ExamBoard;
+  hscUniversityOther?: string;
+  lastExam: LastExam;
+  lastExamOther?: string;
+  passingYear: number;
+  university: ExamBoard;
+  universityOther?: string;
+  dob: string;
+
+  // E — Family & Guardian
+  fatherOcc?: string;
+  motherOcc?: string;
+  placeOfWork?: string;
+  parentMobile: string;
+
+  // F — Address
+  perm: AdmissionAddress;
+  local: AdmissionAddress;
+  guardianMobile: string;
+  guardianAddress: string;
+
+  // Payment (fixed, pre-paid fee)
+  payments: PaymentRow[];
+
+  // Workflow
+  status: ApplicationStatus;
+  submittedAt: string;
+  updatedAt: string;
+  decidedAt?: string;
+  decidedBy?: string;
+  rejectionReason?: string;
+  cancellationReason?: string;
+  seatNo?: string;
+}
+
+/** The applicant-editable slice the form owns (Section A + workflow excluded). */
+export type AdmissionFormData = Omit<
+  AdmissionApplication,
+  | "applicationNo"
+  | "rollno"
+  | "status"
+  | "submittedAt"
+  | "updatedAt"
+  | "decidedAt"
+  | "decidedBy"
+  | "rejectionReason"
+  | "cancellationReason"
+  | "seatNo"
+>;

@@ -13,6 +13,8 @@ import { Crest, Logo, Wordmark } from "@/components/shared/Logo";
 import { HeroBanner } from "@/components/shared/HeroBanner";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Select } from "@/components/ui/Field";
+import { FluidTabs } from "@/components/ui/FluidTabs";
+import { TextAnimate } from "@/components/ui/TextAnimate";
 
 const ROLE_TABS: { role: Role; label: string; icon: typeof Users }[] = [
   { role: "student", label: "Student", icon: GraduationCap },
@@ -73,74 +75,72 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
       {/* Brand panel — real IET campus photo with a navy scrim */}
-      <HeroBanner scrim="bottom" rounded={false} className="hidden flex-col justify-between p-10 lg:flex">
+      <HeroBanner
+        scrim="bottom"
+        rounded={false}
+        className="hidden flex-col justify-between p-10 lg:flex"
+      >
         <Wordmark className="h-14 w-auto" />
         <div>
           <p className="font-serif-accent text-gold">{INSTITUTE.motto}</p>
-          <h1 className="mt-3 max-w-md font-heading text-4xl leading-tight font-bold text-white">
-            The complete student journey, in one place.
+          <h1 className="font-heading mt-3 max-w-md text-4xl leading-tight font-bold text-white">
+            <TextAnimate text="The complete student journey, in one place." />
           </h1>
           <p className="mt-4 max-w-md text-white/70">
             Admission to degree — registration, attendance, internal assessment, examinations,
             results and certificates for {INSTITUTE.name}, {INSTITUTE.university}.
           </p>
           <ul className="mt-6 flex flex-wrap gap-2 text-xs">
-            {["CBCS credits", "MST · 20/80", "75% eligibility", "SGPA · CGPA", "DTE-MP admission"].map(
-              (chip) => (
-                <li key={chip} className="rounded-full border border-white/15 px-3 py-1 text-white/80">
-                  {chip}
-                </li>
-              ),
-            )}
+            {[
+              "CBCS credits",
+              "MST · 20/80",
+              "75% eligibility",
+              "SGPA · CGPA",
+              "DTE-MP admission",
+            ].map((chip) => (
+              <li
+                key={chip}
+                className="rounded-full border border-white/15 px-3 py-1 text-white/80"
+              >
+                {chip}
+              </li>
+            ))}
           </ul>
         </div>
-        <p className="text-xs text-white/60">Prototype for demonstration · not an official DAVV system.</p>
+        <p className="text-xs text-white/60">
+          Prototype for demonstration · not an official DAVV system.
+        </p>
       </HeroBanner>
 
       {/* Sign-in form */}
-      <main className="flex items-center justify-center bg-cream p-6">
+      <main className="bg-cream flex items-center justify-center p-6">
         <div className="w-full max-w-md">
           <div className="mb-6 flex items-center justify-between lg:hidden">
             <Logo />
           </div>
 
-          <div className="rounded-card border border-line bg-surface p-6 shadow-card sm:p-8">
+          <div className="rounded-card border-line bg-surface shadow-card border p-6 sm:p-8">
             <div className="mb-6 hidden items-center gap-3 lg:flex">
-              <span className="grid size-12 place-items-center rounded-xl bg-navy/5">
+              <span className="bg-navy/5 grid size-12 place-items-center rounded-xl">
                 <Crest className="size-9" />
               </span>
               <div>
-                <h2 className="font-heading text-xl font-bold text-navy">Sign in</h2>
-                <p className="text-sm text-muted">Access your Student Lifecycle portal</p>
+                <h2 className="font-heading text-navy text-xl font-bold">Sign in</h2>
+                <p className="text-muted text-sm">Access your Student Lifecycle portal</p>
               </div>
             </div>
 
             {/* Role tabs */}
-            <div className="mb-5 grid grid-cols-3 gap-1 rounded-btn bg-cream p-1" role="tablist">
-              {ROLE_TABS.map((tab) => {
-                const active = role === tab.role;
-                const Icon = tab.icon;
-                return (
-                  <button
-                    key={tab.role}
-                    type="button"
-                    role="tab"
-                    aria-selected={active}
-                    onClick={() => {
-                      setRole(tab.role);
-                      setError(null);
-                    }}
-                    className={
-                      "flex flex-col items-center gap-1 rounded-md px-2 py-2 text-xs font-medium transition-colors " +
-                      (active ? "bg-surface text-navy shadow-card" : "text-muted hover:text-navy")
-                    }
-                  >
-                    <Icon className="size-4" />
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
+            <FluidTabs
+              className="mb-5"
+              orientation="stacked"
+              tabs={ROLE_TABS.map((tab) => ({ id: tab.role, label: tab.label, icon: tab.icon }))}
+              active={role}
+              onChange={(next) => {
+                setRole(next);
+                setError(null);
+              }}
+            />
 
             <form onSubmit={submit} className="space-y-4">
               {role === "student" && (
@@ -156,9 +156,17 @@ export default function LoginPage() {
                     </Select>
                   </Field>
                   <Field label="Enrollment Number" required>
-                    <Input value={studentId} onChange={(e) => onStudentChange(e.target.value)} spellCheck={false} />
+                    <Input
+                      value={studentId}
+                      onChange={(e) => onStudentChange(e.target.value)}
+                      spellCheck={false}
+                    />
                   </Field>
-                  <Field label="Date of Birth" required hint={selectedStudent ? undefined : "DD as per records"}>
+                  <Field
+                    label="Date of Birth"
+                    required
+                    hint={selectedStudent ? undefined : "DD as per records"}
+                  >
                     <Input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
                   </Field>
                 </>
@@ -189,7 +197,7 @@ export default function LoginPage() {
               )}
 
               {error && (
-                <p className="rounded-btn bg-danger-bg px-3 py-2 text-sm text-danger" role="alert">
+                <p className="rounded-btn bg-danger-bg text-danger px-3 py-2 text-sm" role="alert">
                   {error}
                 </p>
               )}
@@ -200,10 +208,17 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <p className="mt-4 text-center text-xs text-muted">
+            <p className="text-muted mt-4 text-center text-xs">
               This is a prototype with mock data. Any listed demo account signs you in.
             </p>
           </div>
+
+          <p className="text-muted mt-4 text-center text-xs">
+            Applying for admission?{" "}
+            <a href="/admissions" className="text-gold-600 font-semibold hover:underline">
+              Open the Admission Portal →
+            </a>
+          </p>
         </div>
       </main>
     </div>

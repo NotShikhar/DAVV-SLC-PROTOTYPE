@@ -16,6 +16,20 @@ export { ADMINS, PRIMARY_ADMIN_ID, getAdmin, listAdmins } from "./admins";
 export { NOTIFICATIONS } from "./notifications";
 export { SEED_CERTIFICATE_REQUESTS } from "./certificates";
 export { CALENDAR, upcomingEvents } from "./calendar";
+export {
+  ELIGIBLE_CANDIDATES,
+  PRIMARY_ELIGIBLE_ROLL,
+  getEligibleCandidate,
+  listEligibleCandidates,
+  matchEligible,
+} from "./eligibleCandidates";
+export {
+  ADMISSION_INCHARGES,
+  PRIMARY_INCHARGE_ID,
+  getIncharge,
+  listIncharges,
+} from "./admissionIncharges";
+export { SEED_ADMISSION_APPLICATIONS } from "./admissionApplications";
 
 /** A representative "today" for this prototype (Semester V has just begun). */
 export const TODAY_ISO = "2026-07-07";

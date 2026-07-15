@@ -11,6 +11,8 @@ import { Section } from "@/components/ui/Section";
 import { Avatar } from "@/components/ui/Avatar";
 import { StatCard } from "@/components/shared/StatCard";
 import { buttonClasses } from "@/components/ui/Button";
+import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
+import { StatusIndicator } from "@/components/ui/StatusIndicator";
 
 export default function FacultyDashboardPage() {
   const faculty = useCurrentFaculty();
@@ -36,28 +38,55 @@ export default function FacultyDashboardPage() {
       />
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Courses" value={faculty.coursesTaught.length} icon={BookOpen} tone="info" />
-        <StatCard label="Students" value={roster.length} icon={Users} tone="info" hint={primaryCourse.courseCode} />
-        <StatCard label="Advisees" value={faculty.advisorOf.length} icon={GraduationCap} tone="neutral" />
+        <StatCard
+          label="Courses"
+          value={<AnimatedNumber value={faculty.coursesTaught.length} />}
+          icon={BookOpen}
+          tone="info"
+        />
+        <StatCard
+          label="Students"
+          value={<AnimatedNumber value={roster.length} />}
+          icon={Users}
+          tone="info"
+          hint={primaryCourse.courseCode}
+        />
+        <StatCard
+          label="Advisees"
+          value={<AnimatedNumber value={faculty.advisorOf.length} />}
+          icon={GraduationCap}
+          tone="neutral"
+        />
         <StatCard
           label="Pending internals"
-          value={pending}
+          value={<AnimatedNumber value={pending} />}
           icon={ClipboardCheck}
           tone={pending ? "warning" : "success"}
           href="/faculty/marks-entry"
-          hint="MST-2 to enter"
+          hint={
+            pending ? (
+              <span className="inline-flex items-center gap-1.5">
+                <StatusIndicator tone="warning" size="sm" aria-hidden /> MST-2 to enter
+              </span>
+            ) : (
+              "MST-2 to enter"
+            )
+          }
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Section title="My courses" icon={BookOpen} bodyClassName="p-0">
-            <ul className="divide-y divide-line">
+            <ul className="divide-line divide-y">
               {faculty.coursesTaught.map((c) => (
-                <li key={c.courseCode} className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+                <li
+                  key={c.courseCode}
+                  className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+                >
                   <div>
-                    <p className="font-medium text-navy">{c.title}</p>
-                    <p className="text-xs text-muted">
+                    <p className="text-navy font-medium">{c.title}</p>
+                    <p className="text-muted text-xs">
                       {c.courseCode} · {c.branch} · Sem {toRoman(c.semester)} · Section {c.section}
                     </p>
                   </div>
@@ -77,9 +106,9 @@ export default function FacultyDashboardPage() {
 
         <Section title="My advisees" icon={GraduationCap} bodyClassName="p-0">
           {faculty.advisorOf.length === 0 ? (
-            <p className="p-5 text-sm text-muted">No advisees assigned.</p>
+            <p className="text-muted p-5 text-sm">No advisees assigned.</p>
           ) : (
-            <ul className="divide-y divide-line">
+            <ul className="divide-line divide-y">
               {faculty.advisorOf.map((id) => {
                 const s = getStudent(id);
                 if (!s) return null;
@@ -87,8 +116,8 @@ export default function FacultyDashboardPage() {
                   <li key={id} className="flex items-center gap-3 px-5 py-3">
                     <Avatar name={s.name} color={s.photoColor} size="sm" />
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-navy">{s.name}</p>
-                      <p className="text-xs text-muted">{s.enrollmentNo}</p>
+                      <p className="text-navy truncate text-sm font-medium">{s.name}</p>
+                      <p className="text-muted text-xs">{s.enrollmentNo}</p>
                     </div>
                   </li>
                 );

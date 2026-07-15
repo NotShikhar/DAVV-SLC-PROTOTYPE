@@ -12,6 +12,7 @@ import { useSettings } from "@/store/settings";
 import { useTranslation, type Locale } from "@/lib/i18n";
 import { toRoman, semesterParity } from "@/lib/utils/format";
 import { Avatar } from "@/components/ui/Avatar";
+import { StatusIndicator } from "@/components/ui/StatusIndicator";
 import { cn } from "@/lib/utils/cn";
 
 interface TopbarProps {
@@ -27,7 +28,7 @@ function LanguageToggle() {
   const options: Locale[] = ["en", "hi"];
   return (
     <div
-      className="hidden items-center rounded-btn border border-field p-0.5 sm:flex"
+      className="rounded-btn border-field hidden items-center border p-0.5 sm:flex"
       role="group"
       aria-label="Language"
     >
@@ -64,19 +65,21 @@ export function Topbar({ role, name, meta, color }: TopbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[#e5d9c3] bg-cream/[0.92] backdrop-blur-[8px]">
+    <header className="bg-cream/[0.92] sticky top-0 z-30 border-b border-[#e5d9c3] backdrop-blur-[8px]">
       <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={toggleSidebar}
             aria-label="Open menu"
-            className="rounded-lg p-2 text-slate hover:bg-cream-deep hover:text-navy lg:hidden"
+            className="text-slate hover:bg-cream-deep hover:text-navy rounded-lg p-2 lg:hidden"
           >
             <Menu className="size-5" />
           </button>
-          <span className="font-heading text-sm font-semibold text-navy sm:hidden">IET DAVV · SLC</span>
-          <p className="font-serif-accent hidden text-sm text-soft md:block">
+          <span className="font-heading text-navy text-sm font-semibold sm:hidden">
+            IET DAVV · SLC
+          </span>
+          <p className="font-serif-accent text-soft hidden text-sm md:block">
             {semesterParity(sem)} Semester · {session} · Sem {toRoman(sem)}
           </p>
         </div>
@@ -88,13 +91,11 @@ export function Topbar({ role, name, meta, color }: TopbarProps) {
             <Link
               href="/notifications"
               aria-label={`${t("nav.notifications")}${unread ? `, ${unread} unread` : ""}`}
-              className="relative rounded-lg p-2 text-slate hover:bg-cream-deep hover:text-navy"
+              className="text-slate hover:bg-cream-deep hover:text-navy relative rounded-lg p-2"
             >
               <Bell className="size-5" />
               {unread > 0 && (
-                <span className="absolute top-1 right-1 grid min-w-4 place-items-center rounded-full bg-danger px-1 text-[10px] font-semibold text-white">
-                  {unread}
-                </span>
+                <StatusIndicator tone="danger" count={unread} className="absolute top-1 right-1" />
               )}
             </Link>
           )}
@@ -103,31 +104,31 @@ export function Topbar({ role, name, meta, color }: TopbarProps) {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="flex items-center gap-2 rounded-lg p-1 pr-2 hover:bg-cream-deep"
+              className="hover:bg-cream-deep flex items-center gap-2 rounded-lg p-1 pr-2"
               aria-haspopup="menu"
               aria-expanded={menuOpen}
             >
               <Avatar name={name} color={color} size="sm" ring />
               <span className="hidden text-left leading-tight sm:block">
-                <span className="block text-sm font-semibold text-navy">{name}</span>
-                <span className="block text-xs text-muted">{meta}</span>
+                <span className="text-navy block text-sm font-semibold">{name}</span>
+                <span className="text-muted block text-xs">{meta}</span>
               </span>
-              <ChevronDown className="size-4 text-muted" />
+              <ChevronDown className="text-muted size-4" />
             </button>
 
             {menuOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-                <div className="absolute right-0 z-20 mt-2 w-52 rounded-card border border-line bg-surface p-1 shadow-pop">
-                  <div className="px-3 py-2 text-xs text-muted">
+                <div className="rounded-card border-line bg-surface shadow-pop absolute right-0 z-20 mt-2 w-52 border p-1">
+                  <div className="text-muted px-3 py-2 text-xs">
                     Signed in as
-                    <span className="mt-0.5 block font-medium text-navy">{name}</span>
+                    <span className="text-navy mt-0.5 block font-medium">{name}</span>
                     <span className="block">{t(`roles.${role}`)}</span>
                   </div>
                   <button
                     type="button"
                     onClick={signOut}
-                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-danger hover:bg-danger-bg"
+                    className="text-danger hover:bg-danger-bg flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium"
                   >
                     <LogOut className="size-4" />
                     {t("common.logout")}
